@@ -26,11 +26,11 @@ defineEmits<{ command: [cmd: Command] }>();
       >
         <span>{{ r.icon }}</span
         ><b>{{ r.name }}</b
-        ><small>备料 · 消耗1份</small>
+        ><small>{{ r.station === null ? "调汁 · 免灶直出" : "备料 · 消耗1份" }}</small>
       </button>
     </div>
     <p class="muted">
-      已备 {{ game.portions.length }} / 6 份 · 在灶台选择空闲设备下锅
+      已备 {{ game.portions.length }} / 6 份 · 酱汁在备料台直接调好，送往出餐台
     </p>
   </section>
 </template>

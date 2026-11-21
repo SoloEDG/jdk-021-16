@@ -2,7 +2,7 @@ import type { Game, Command } from "../shared/types";
 import { accept, expire } from "../features/orders";
 import { prepare, restock } from "../features/pantry";
 import { cook, lift } from "../features/kitchen";
-import { plate, discard, deliver } from "../features/service";
+import { plate, unplate, newPlate, discard, deliver } from "../features/service";
 export function dispatch(g: Game, c: Command) {
   if (!g.running || g.ended) {
     g.notice = "请先开始营业，暂停时不能操作厨房";
@@ -29,11 +29,16 @@ export function dispatch(g: Game, c: Command) {
       lift(g, c.id);
       break;
     case "plate":
-      plate(g, c.id);
+      plate(g, c.id, c.plate);
       break;
-    case "select-dish":
-      if (g.dishes.some((d) => d.id === c.id && d.stage === "plated"))
-        g.selectedDish = c.id;
+    case "unplate":
+      unplate(g, c.id);
+      break;
+    case "new-plate":
+      newPlate(g);
+      break;
+    case "select-plate":
+      if (g.plates.some((p) => p.id === c.id)) g.selectedPlate = c.id;
       break;
     case "serve":
       deliver(g);

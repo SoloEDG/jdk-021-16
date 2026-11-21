@@ -3,8 +3,22 @@ import { totals } from "../lib/totals";
 export function closeShift(g: Game) {
   g.running = false;
   g.ended = true;
+  // 打烊报废：剩余每个组件只结算一次
+  const leftover = g.dishes.length;
+  if (leftover) {
+    g.entries.push({
+      id: g.nextId++,
+      time: g.time,
+      label: `打烊报废 · ${leftover}件组件`,
+      amount: -3 * leftover,
+      kind: "waste",
+    });
+  }
   g.portions = [];
   g.dishes = [];
+  g.plates = [];
+  g.selectedPlate = null;
+  g.selectedOrder = null;
   g.stoves.forEach((s) => (s.portion = null));
   g.best = Math.max(g.best, totals(g).net);
   g.notice = "午市结束，辛苦了，主厨！";

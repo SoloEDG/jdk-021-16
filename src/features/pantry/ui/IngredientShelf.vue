@@ -3,7 +3,7 @@ import type { Game, Ingredient } from "../../../shared/types";
 import { ingredients } from "../../../shared/catalog";
 defineProps<{ game: Game }>();
 defineEmits<{ restock: [i: Ingredient] }>();
-const ids: Ingredient[] = ["beef", "noodle", "greens"];
+const ids: Ingredient[] = ["beef", "noodle", "greens", "spice"];
 </script>
 <template>
   <div class="shelf">

@@ -17,8 +17,8 @@ export function cook(g: Game, portion: number, stove: number) {
 export function lift(g: Game, id: number) {
   const s = g.stoves.find((s) => s.id === id);
   if (!s?.portion) return;
-  if (g.dishes.length >= 8) {
-    g.notice = "出餐台已满，请先上菜或丢弃";
+  if (g.dishes.filter((d) => d.plateId === null).length >= 8) {
+    g.notice = "出餐台已满，请先装盘或丢弃";
     return;
   }
   const p = s.portion,
@@ -28,7 +28,7 @@ export function lift(g: Game, id: number) {
     recipe: p.recipe,
     quality: q,
     cookedAt: g.time,
-    stage: "counter",
+    plateId: null,
   });
   s.portion = null;
   g.notice = `起锅完成，品质 ${q}，前往装盘`;

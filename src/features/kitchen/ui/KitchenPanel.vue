@@ -25,7 +25,7 @@ defineEmits<{ command: [cmd: Command] }>();
       />
     </div>
     <div class="kitchen-note">
-      <span>◷</span> 牛排 12s · 意面 10s · 沙拉 6s
+      <span>◷</span> 牛排 12s · 意面 10s · 沙拉 6s · 酱汁免灶
       <span class="muted">提前或延迟起锅会降低品质</span>
     </div>
   </section>

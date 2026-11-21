@@ -8,6 +8,18 @@ export function prepare(g: Game, r: RecipeId) {
     return;
   }
   g.stock[recipes[r].ingredient]--;
+  if (recipes[r].station === null) {
+    // 酱汁在备料台直接调好，作为组件送往出餐台
+    g.dishes.push({
+      id: g.nextId++,
+      recipe: r,
+      quality: 100,
+      cookedAt: g.time,
+      plateId: null,
+    });
+    g.notice = `${recipes[r].name} 已调好，送往出餐台，装入盘中即完成淋酱`;
+    return;
+  }
   g.portions.push({ id: g.nextId++, recipe: r, preparedAt: g.time });
   g.notice = `${recipes[r].name} 备料完成，可送入灶台`;
 }

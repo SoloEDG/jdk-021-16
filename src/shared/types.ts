@@ -1,17 +1,34 @@
-export type RecipeId = "steak" | "pasta" | "salad";
-export type Ingredient = "beef" | "noodle" | "greens";
+export type RecipeId = "steak" | "pasta" | "salad" | "pepper" | "cream";
+export type Ingredient = "beef" | "noodle" | "greens" | "spice";
+export type Role = "main" | "side" | "sauce";
 export interface Recipe {
   id: RecipeId;
   name: string;
   icon: string;
+  role: Role;
   ingredient: Ingredient;
-  station: "pan" | "pot";
+  station: "pan" | "pot" | null;
   target: number;
+  price: number;
+}
+export type ComboId =
+  | "steak-solo"
+  | "pasta-solo"
+  | "salad-solo"
+  | "pepper-steak"
+  | "garden-pasta"
+  | "steak-platter"
+  | "pasta-platter";
+export interface Combo {
+  id: ComboId;
+  name: string;
+  icon: string;
+  spec: Partial<Record<Role, RecipeId>>;
   price: number;
 }
 export interface Order {
   id: number;
-  recipe: RecipeId;
+  combo: ComboId;
   guest: string;
   arrived: number;
   deadline: number;
@@ -33,7 +50,11 @@ export interface Dish {
   recipe: RecipeId;
   quality: number;
   cookedAt: number;
-  stage: "counter" | "plated";
+  plateId: number | null;
+}
+export interface Plate {
+  id: number;
+  sauced: boolean;
 }
 export interface Entry {
   id: number;
@@ -49,12 +70,13 @@ export interface Game {
   ended: boolean;
   nextId: number;
   selectedOrder: number | null;
-  selectedDish: number | null;
+  selectedPlate: number | null;
   orders: Order[];
   stock: Record<Ingredient, number>;
   portions: Portion[];
   stoves: Stove[];
   dishes: Dish[];
+  plates: Plate[];
   entries: Entry[];
   combo: number;
   served: number;
@@ -68,8 +90,10 @@ export type Command =
   | { type: "prepare"; recipe: RecipeId }
   | { type: "cook"; portion: number; stove: number }
   | { type: "lift"; id: number }
-  | { type: "plate"; id: number }
-  | { type: "select-dish"; id: number }
+  | { type: "plate"; id: number; plate?: number }
+  | { type: "unplate"; id: number }
+  | { type: "new-plate" }
+  | { type: "select-plate"; id: number }
   | { type: "serve" }
   | { type: "discard"; id: number }
   | { type: "restock"; ingredient: Ingredient };
